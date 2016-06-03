@@ -22,6 +22,15 @@ function handleNames(req, res, next) {
   next();
 }
 
+var date = Date();
+
+function handleCacheTest(req, res, next) {
+  res.header('Last-Modified', date);
+  var obj = { name: 'Cache', id: 100 };
+  res.json(obj);
+  next();
+}
+
 function handleName(req, res, next) {
   var name = randomName();
   name.bio = faker.lorem.paragraph();
@@ -35,6 +44,7 @@ server.use(restify.CORS());
 
 server.get('/names', handleNames);
 server.get('/names/:id', handleName);
+server.get('/cachetest', handleCacheTest);
 
 var port = process.env.PORT || 8080;
 server.listen(port, function() {
